@@ -13,15 +13,17 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.1",
-	name: "Robux Walls",
+	num: "0.1.1",
+	name: "FREEDOM!!!",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0.0</h3><br>
+	<h3>v0.0 - Literally nothing</h3><br>
 		- Nothing, what did you expect?<br>
-	<h3>v0.1</h3><br>
-		- Added walls, and robux. 🤑`
+	<h3>v0.1 - Robux Walls</h3><br>
+		- Added walls, and robux. 🤑<br>
+	<h3>v0.1.1 - FREEDOM!!!</h3><br>
+		- Added wall <s>freedom</s> upgrade.`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
@@ -44,6 +46,9 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(1)
+	if (hasUpgrade("w", 11)) {
+		gain = new Decimal(5)
+	}
 	return gain
 }
 

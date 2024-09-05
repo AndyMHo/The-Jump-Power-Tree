@@ -12,7 +12,7 @@ addLayer("w", {
     }},
     color: "#C65541",
     requires: new Decimal(1), // Can be a function that takes requirement increases into account
-    resource: "walls defeated", // Name of prestige currency
+    resource: "defeated walls", // Name of prestige currency
     baseResource: "jump power", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
@@ -21,7 +21,14 @@ addLayer("w", {
     hotkeys: [
         {key: "w", description: "W: Reset for walls", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return true}
+    layerShown(){return true},
+    upgrades: {
+        11: {
+            title: "Wall have feelings too",
+            description: "Free some walls for jump power gain in return.",
+            cost: new Decimal(5)
+        }
+    }
 })
 addLayer("r", {
     name: "robux", // This is optional, only used in a few places, If absent it just uses the layer id.
@@ -42,9 +49,9 @@ addLayer("r", {
     clickables: {
         11: {
             title: "Ask your parents for robux",
-            display() {return "Get 0 to 10 robux. It's random."},
+            display() {return `Get 0 to 10 robux. It's random.`},
             canClick() {return true},
-            onClick() {player.r.points = (player.r.points).add(random(new Decimal(0),new Decimal(10)).floor())}
+            onClick() {player[this.layer].points = (player[this.layer].points).add(random(new Decimal(0),new Decimal(10)).floor())}
         }
-    }
+    },
 })
