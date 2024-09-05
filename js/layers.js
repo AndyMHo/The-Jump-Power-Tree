@@ -1,6 +1,4 @@
-function random(min,max) {
-    return (new Decimal(Math.random())).mul((max.sub(min)).add(new Decimal(1))).add(min)
-}
+function random(min,max) {return (new Decimal(Math.random())).mul((max.sub(min)).add(new Decimal(1))).add(min)}
 
 addLayer("w", {
     name: "walls", // This is optional, only used in a few places, If absent it just uses the layer id.
@@ -49,9 +47,24 @@ addLayer("r", {
     clickables: {
         11: {
             title: "Ask your parents for robux",
-            display() {return `Get 0 to 10 robux. It's random.`},
+            display() {return `Get 0 to ${format((new Decimal(10).mul(buyableEffect(this.layer, 11))))} robux. It's random.`},
             canClick() {return true},
-            onClick() {player[this.layer].points = (player[this.layer].points).add(random(new Decimal(0),new Decimal(10)).floor())}
+            onClick() {
+                player[this.layer].points = (player[this.layer].points).add(random(new Decimal(0),(new Decimal(10).mul(buyableEffect(this.layer, 11)))).floor())
+            }
         }
     },
+    buyables: {
+        11: {
+            title: "Bribery",
+            display() {return `Trade walls for more robux per click.<br>Cost: ${format(this.cost(getBuyableAmount(this.layer, this.id)))}`},
+            cost(x) {return new Decimal(2).pow(x)},
+            canAfford() {return player.w.points.gte(this.cost())},
+            buy() {
+                player.w.points = player.w.points.sub(this.cost())
+                setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+            },
+            effect() {return new Decimal(2).pow(getBuyableAmount(this.layer, this.id))}
+        }
+    }
 })
